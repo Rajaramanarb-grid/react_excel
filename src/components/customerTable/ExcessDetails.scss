@@ -1,0 +1,38 @@
+// ExcessDetails – label: value list for expanded row
+$ct-border: #dddddd;
+$ct-text: #333333;
+
+.excess-details-list {
+  display: inline-table;
+  border-collapse: collapse;
+  margin: 0;
+  width: auto;
+  min-width: 0;
+}
+
+.excess-details-item {
+  display: table-row;
+  border-bottom: 1px solid $ct-border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.excess-details-label {
+  display: table-cell;
+  margin: 0;
+  padding: 4px 12px 8px 0;
+  font-weight: 600;
+  color: $ct-text;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.excess-details-value {
+  display: table-cell;
+  margin: 0;
+  padding: 4px 0 8px 0;
+  color: $ct-text;
+  vertical-align: baseline;
+}

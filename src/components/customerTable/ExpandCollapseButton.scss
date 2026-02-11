@@ -1,0 +1,47 @@
+// ExpandCollapseButton – + (green) expand / − (red) collapse
+.expand-collapse-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  &--expand {
+    background-color: #28a745;
+    color: #ffffff;
+
+    &:focus {
+      outline-color: #28a745;
+    }
+  }
+
+  &--collapse {
+    background-color: #dc3545;
+    color: #ffffff;
+
+    &:focus {
+      outline-color: #dc3545;
+    }
+  }
+}
