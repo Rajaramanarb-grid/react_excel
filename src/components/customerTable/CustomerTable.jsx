@@ -11,13 +11,13 @@ import {
     validateCVV,
     validateSSN,
 } from "@/utils/FormUtils";
+import FormModel from "@/components/FormModel/FormModel";
 
 class CustomerTable extends React.PureComponent {
     static defaultProps = {
         columns: [],
         data: [],
         visibleColumnCount: 7,
-        validation: true,
     };
 
     constructor(props) {
@@ -25,6 +25,8 @@ class CustomerTable extends React.PureComponent {
         this.state = {
             expandedRowIndex: null,
             allRowsValid: true,
+            isModalOpen: false,
+            selectedRowData: null,
         };
     }
 
@@ -56,9 +58,28 @@ class CustomerTable extends React.PureComponent {
         return true;
     };
 
+    handleCellClick = (rowData, columns) => {
+        const rowDetails = columns.map((column, index) => ({
+            label: column,
+            value: rowData[index],
+        }));
+
+        this.setState({
+            isModalOpen: true,
+            selectedRowData: rowDetails,
+        });
+    };
+
+    handleCloseModal = () => {
+        this.setState({
+            isModalOpen: false,
+            selectedRowData: null,
+        });
+    };
+
     render() {
         const { columns, data, visibleColumnCount } = this.props;
-        const { expandedRowIndex } = this.state;
+        const { expandedRowIndex, isModalOpen, selectedRowData } = this.state;
 
         const effectiveCount = Math.max(
             0,
@@ -195,6 +216,17 @@ class CustomerTable extends React.PureComponent {
                                                     <td
                                                         key={cellIndex}
                                                         className="customer-table-cell"
+                                                        {...((this.props
+                                                            .validation && !hasExcess) && {
+                                                            onClick: () =>
+                                                                this.handleCellClick(
+                                                                    rowArray,
+                                                                    columns,
+                                                                ),
+                                                            style: {
+                                                                cursor: "pointer",
+                                                            },
+                                                        })}
                                                     >
                                                         {cell}
                                                     </td>
@@ -223,6 +255,13 @@ class CustomerTable extends React.PureComponent {
                         )}
                     </tbody>
                 </table>
+
+                {isModalOpen && (
+                    <FormModel
+                        selectedRowData={selectedRowData}
+                        onClose={this.handleCloseModal}
+                    />
+                )}
             </div>
         );
     }

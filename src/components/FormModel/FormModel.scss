@@ -1,0 +1,97 @@
+$ct-border: #dddddd;
+$ct-header-bg: #04203d;
+$ct-header-text: #ffffff;
+$ct-row-bg: #ffffff;
+$ct-row-hover: #f5f5f5;
+$ct-text: #333333;
+
+.form-model {
+    &-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    &-modal {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        width: 90%;
+        max-width: 500px;
+        max-height: 80vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        background-color: $ct-header-bg;
+        color: $ct-header-text;
+        border-bottom: 1px solid $ct-border;
+
+        h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+    }
+
+    &-modal-close {
+        background: none;
+        border: none;
+        color: $ct-header-text;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.2s ease;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    &-modal-body {
+        padding: 20px;
+        overflow-y: auto;
+        flex: 1;
+    }
+
+    &-modal-row {
+        display: flex;
+        padding: 12px 0;
+        border-bottom: 1px solid $ct-border;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    &-modal-label {
+        font-weight: 600;
+        color: $ct-header-bg;
+        min-width: 140px;
+        margin-right: 16px;
+    }
+
+    &-modal-value {
+        color: $ct-text;
+        word-break: break-word;
+    }
+}
