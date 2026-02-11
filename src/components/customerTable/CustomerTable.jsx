@@ -216,8 +216,8 @@ class CustomerTable extends React.PureComponent {
                                                     <td
                                                         key={cellIndex}
                                                         className="customer-table-cell"
-                                                        {...((this.props
-                                                            .validation && !hasExcess) && {
+                                                        {...(this.props
+                                                            .validation && {
                                                             onClick: () =>
                                                                 this.handleCellClick(
                                                                     rowArray,
