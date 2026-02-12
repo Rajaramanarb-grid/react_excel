@@ -1,32 +1,10 @@
-.signup-overlay {
-    position: fixed;
-    top: 50px;
-    left: 500px;
-    right: 0;
-    bottom: 0;
-    background-color: rgba #00000080 (0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    overflow-y: scroll;
-    height: 100vh;
-    width: 30vw;
-}
-
 .signup {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: auto;
+    min-height: 100vh;
     width: 100%;
     padding: 40px 20px;
-    background-color: white;
-    border-radius: 8px;
-    max-width: 900px;
-    margin: 20px;
-    max-height: 90vh;
-    overflow-y: auto;
 
     &__container {
         display: flex;
@@ -34,45 +12,12 @@
         align-items: center;
         max-width: 800px;
         width: 100%;
-        position: relative;
-    }
-
-    &__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        width: 100%;
-        position: relative;
-        margin-bottom: 30px;
-    }
-
-    &__close {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background: none;
-        border: none;
-        font-size: 36px;
-        line-height: 1;
-        color: #333;
-        cursor: pointer;
-        padding: 0;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: color 0.2s ease;
-
-        &:hover {
-            color: #d32f2f;
-        }
     }
 
     &__logo {
         width: 298px;
         height: 55px;
-        margin: 0 auto;
+        margin-bottom: 30px;
     }
 
     &__title {
@@ -162,7 +107,7 @@
                 text-decoration: none;
             }
         }
-    }
+    } 
 
     &__divider {
         width: 100%;

@@ -27,6 +27,7 @@ class CustomerTable extends React.PureComponent {
             allRowsValid: true,
             isModalOpen: false,
             selectedRowData: null,
+            selectedRowIndex: null,
         };
     }
 
@@ -58,7 +59,7 @@ class CustomerTable extends React.PureComponent {
         return true;
     };
 
-    handleCellClick = (rowData, columns) => {
+    handleCellClick = (rowData, columns, rowIndex) => {
         const rowDetails = columns.map((column, index) => ({
             label: column,
             value: rowData[index],
@@ -67,6 +68,7 @@ class CustomerTable extends React.PureComponent {
         this.setState({
             isModalOpen: true,
             selectedRowData: rowDetails,
+            selectedRowIndex: rowIndex,
         });
     };
 
@@ -74,7 +76,19 @@ class CustomerTable extends React.PureComponent {
         this.setState({
             isModalOpen: false,
             selectedRowData: null,
+            selectedRowIndex: null,
         });
+    };
+
+    handleRowChange = (updatedRowData) => {
+        const { selectedRowIndex } = this.state;
+        const { onRowChange } = this.props;
+
+        if (onRowChange && selectedRowIndex !== null) {
+            onRowChange(updatedRowData, selectedRowIndex);
+        }
+
+        this.handleCloseModal();
     };
 
     render() {
@@ -222,6 +236,7 @@ class CustomerTable extends React.PureComponent {
                                                                 this.handleCellClick(
                                                                     rowArray,
                                                                     columns,
+                                                                    rowIndex,
                                                                 ),
                                                             style: {
                                                                 cursor: "pointer",
@@ -260,6 +275,7 @@ class CustomerTable extends React.PureComponent {
                     <FormModel
                         selectedRowData={selectedRowData}
                         onClose={this.handleCloseModal}
+                        onRowChange={this.handleRowChange}
                     />
                 )}
             </div>

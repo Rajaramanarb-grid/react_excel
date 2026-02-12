@@ -1,0 +1,8 @@
+export const FOOTER = {
+    text1: "The rapid! PayCard® Visa® Payroll Card is issued by Pathward, N.A.®, Member FDIC, pursuant to a license from Visa U.S.A. Inc. Visa is a registered trademark of Visa International Service Association. This card can be used everywhere Visa debit cards are accepted.",
+    text2: "The rapid! PayCard® Mastercard® is issued by Pathward, N.A.®, Member FDIC, pursuant to license by Mastercard International Incorporated. Mastercard is a registered trademark, and the circles design is a trademark of Mastercard International Incorporated. Prepaid card can be used wherever Debit Mastercard is accepted.",
+    text3: "The rapid! PayCard® Visa® Payroll Card is issued by Green Dot Bank, Member FDIC, pursuant to a license from Visa U.S.A., Inc. This card can be used everywhere Visa debit cards are accepted.",
+    text4: "The rapid! PayCard® Mastercard® Payroll Card is issued by Green Dot Bank, Member FDIC, pursuant to a license by Mastercard International Incorporated. Mastercard is a registered trademark, and the circles design is a trademark of Mastercard International Incorporated. The use of this Card is subject to the terms and conditions.",
+    text5: "Green Dot Bank also operates under the following registered trade names: GO2bank, GoBank and Bonneville Bank. All of these registered trade names are used by, and refer to, a single FDIC-insured bank, Green Dot Bank. Deposits under any of these trade names are deposits with Green Dot Bank and are aggregated for deposit insurance coverage up to the allowable limits.",
+    text6: " © 2026 Green Dot Corporation. rapid! Wages provided by Green Dot. Green Dot and rapid! are registered trademarks. Green Dot Corporation NMLS #914924; Green Dot Bank NMLS #908739."
+};

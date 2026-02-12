@@ -80,12 +80,12 @@ export const validateSSN = (value) => {
     if (!digitsOnly || digitsOnly === "") {
         return "Required";
     }
-    if (digitsOnly.length !== 9) {
+    if ((digitsOnly.trim()).length !== 9) {
         return "SSN must be 9 digits";
     }
-    if (!/^\d+$/.test(digitsOnly)) {
-        return "SSN must contain only digits";
-    }
+    // if (!/^\d+$/.test(digitsOnly)) {
+    //     return "SSN must contain only digits";
+    // }
     return "";
 };
 
