@@ -12,7 +12,24 @@ class CsvTable extends PureComponent {
         this.state = {
             headers: [],
             data: [],
+            users: [],
         };
+    }
+
+    fetchUsers = async () => {
+        try {
+            const response = await fetch(
+                "https://jsonplaceholder.typicode.com/users",
+            );
+            const data = await response.json();
+            this.setState({ users: data });
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        }
+    };
+
+    componentDidMount() {
+        this.fetchUsers();
     }
 
     handleFileUpload = (e) => {
@@ -30,10 +47,30 @@ class CsvTable extends PureComponent {
                 .split("\n")
                 .map((row) => row.split(","));
 
-            const headers = rows[0] || [];
-            const data = rows.slice(1);
+            if (rows.length === 0) return;
 
-            this.setState({ headers, data });
+            const originalHeaders = rows[0];
+            const csvData = rows.slice(1);
+
+            const headers = ["First Name", "Last Name", ...originalHeaders];
+
+            const updatedData = csvData.map((row) => {
+                const id = row[0];
+
+                const matchedUser = this.state.users.find(
+                    (u) => String(u.id) === String(id),
+                );
+
+                const firstName = matchedUser ? matchedUser.name : "";
+                const lastName = matchedUser ? matchedUser.username : "";
+
+                return [firstName, lastName, ...row];
+            });
+
+            this.setState({
+                headers,
+                data: updatedData,
+            });
         };
 
         reader.readAsText(file);
@@ -41,8 +78,9 @@ class CsvTable extends PureComponent {
 
     render() {
         const HEADERS = [
-            "First Name",
-            "Last Name",
+            // "First Name",
+            // "Last Name",
+            "ID",
             "Card Number",
             "Exp Month",
             "Exp Year",
@@ -51,8 +89,9 @@ class CsvTable extends PureComponent {
         ];
         const DATA = [
             [
-                "Arun",
-                "Kumar",
+                // "Arun",
+                // "Kumar",
+                "1",
                 "4111111111111111",
                 "1",
                 "2030",
@@ -60,8 +99,9 @@ class CsvTable extends PureComponent {
                 "111111111",
             ],
             [
-                "Priya",
-                "Sharma",
+                // "Priya",
+                // "Sharma",
+                "2",
                 "4222222222222222",
                 "2",
                 "2031",
@@ -69,8 +109,9 @@ class CsvTable extends PureComponent {
                 "222222222",
             ],
             [
-                "Rahul",
-                "Verma",
+                // "Rahul",
+                // "Verma",
+                "3",
                 "4333333333333333",
                 "3",
                 "2032",
@@ -78,8 +119,9 @@ class CsvTable extends PureComponent {
                 "333333333",
             ],
             [
-                "Sneha",
-                "Reddy",
+                // "Sneha",
+                // "Reddy",
+                "4",
                 "4444444444444444",
                 "4",
                 "2033",
@@ -87,8 +129,9 @@ class CsvTable extends PureComponent {
                 "444444444",
             ],
             [
-                "Karthik",
-                "Iyer",
+                // "Karthik",
+                // "Iyer",
+                "5",
                 "4555555555555555",
                 "5",
                 "2034",
@@ -96,8 +139,9 @@ class CsvTable extends PureComponent {
                 "555555555",
             ],
             [
-                "Meena",
-                "Nair",
+                // "Meena",
+                // "Nair",
+                "6",
                 "4666666666666666",
                 "6",
                 "2035",
@@ -105,8 +149,9 @@ class CsvTable extends PureComponent {
                 "666666666",
             ],
             [
-                "Vikram",
-                "Singh",
+                // "Vikram",
+                // "Singh",
+                "7",
                 "4777777777777777",
                 "7",
                 "2036",
@@ -114,8 +159,9 @@ class CsvTable extends PureComponent {
                 "777777777",
             ],
             [
-                "Anjali",
-                "Gupta",
+                // "Anjali",
+                // "Gupta","
+                "8",
                 "4888888888888888",
                 "8",
                 "2037",
@@ -123,8 +169,9 @@ class CsvTable extends PureComponent {
                 "888888888",
             ],
             [
-                "Rohit",
-                "Patel",
+                // "Rohit",
+                // "Patel",
+                "9",
                 "4999999999999999",
                 "9",
                 "2038",
@@ -132,8 +179,9 @@ class CsvTable extends PureComponent {
                 "999999999",
             ],
             [
-                "Divya",
-                "Das",
+                // "Divya",
+                // "Das",
+                "10",
                 "4000000000000000",
                 "10",
                 "2039",
@@ -155,12 +203,12 @@ class CsvTable extends PureComponent {
                 />
 
                 <CustomerTable
-                    columns={HEADERS}
-                    data={DATA}
-                    // columns={this.state.headers}
-                    // data={this.state.data}
-                    visibleColumnCount={4}
-                    validation={true}
+                    // columns={HEADERS}
+                    // data={DATA}
+                    columns={this.state.headers}
+                    data={this.state.data}
+                    // visibleColumnCount={4}
+                    validation={false}
                 />
             </div>
         );
