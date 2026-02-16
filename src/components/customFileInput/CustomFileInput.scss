@@ -1,0 +1,38 @@
+.custom-file {
+    display: flex;
+    width: 300px;
+    position: relative;
+    margin-bottom: 10px;
+
+    &__input {
+        flex: 1;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-right: none;
+        border-radius: 6px 0 0 6px;
+        outline: none;
+    }
+
+    &__button {
+        padding: 8px 14px;
+        border: none;
+        background: #04203d;
+        color: white;
+        cursor: pointer;
+        border-radius: 0 6px 6px 0;
+
+        &:hover {
+            background: #0056b3;
+        }
+    }
+
+    &__hidden {
+        display: none;
+    }
+
+    &__error {
+        color: red;
+        margin-bottom: 10px;
+        font-size: 12px;
+    }
+}

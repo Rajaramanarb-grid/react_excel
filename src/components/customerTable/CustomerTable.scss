@@ -7,138 +7,168 @@ $ct-row-hover: #f5f5f5;
 $ct-text: #333333;
 
 .customer-table {
-  &.customer-table-container,
-  &-container {
-    width: 750px;
-    overflow-x: auto;
-    border: 1px solid $ct-border;
-    border-radius: 4px;
-  }
-
-  &-table {
-    width: 750px;
-    table-layout: fixed;
-    border-collapse: collapse;
-    background-color: $ct-row-bg;
-  }
-
-  &-header {
-    background-color: $ct-header-bg;
-
-    .customer-table-cell {
-      color: $ct-header-text;
-      font-weight: 600;
-      padding: 10px 12px;
-      text-align: left;
-      border-bottom: 2px solid $ct-border;
-      border-right: 1px solid rgba(255, 255, 255, 0.15);
-
-      &:last-child {
-        border-right: none;
-      }
+    &.customer-table-container,
+    &-container {
+        width: 750px;
+        overflow-x: auto;
+        border: 1px solid $ct-border;
+        border-radius: 4px;
     }
 
-    .customer-table-first-cell {
-      color: $ct-header-text;
-      font-weight: 600;
-      padding: 10px 12px;
-      text-align: right;
-      border-bottom: 2px solid $ct-border;
-      border-right: 1px solid rgba(255, 255, 255, 0.15);
-
-      &:last-child {
-        border-right: none;
-      }
-    }
-  }
-
-  &-body {
-    .customer-table-row {
-      background-color: $ct-row-bg;
-      border-bottom: 1px solid $ct-border;
-      transition: background-color 0.2s ease;
-
-      &:hover {
-        background-color: $ct-row-hover;
-      }
-
-      &:last-child {
-        border-bottom: none;
-      }
+    &-table {
+        width: 750px;
+        table-layout: fixed;
+        border-collapse: collapse;
+        background-color: $ct-row-bg;
     }
 
-    .customer-table-cell {
-      color: $ct-text;
-      padding: 10px 12px;
-      text-align: left;
-      border-right: 1px solid $ct-border;
-      vertical-align: middle;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    &-header {
+        background-color: $ct-header-bg;
 
-      &:last-child {
-        border-right: none;
-      }
+        .customer-table-cell {
+            color: $ct-header-text;
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid $ct-border;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+
+        .customer-table-first-cell {
+            color: $ct-header-text;
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: right;
+            border-bottom: 2px solid $ct-border;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+
+            &:last-child {
+                border-right: none;
+            }
+        }
     }
-  }
 
-  &-checkbox {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: $ct-header-bg;
+    &-body {
+        .customer-table-row {
+            background-color: $ct-row-bg;
+            border-bottom: 1px solid $ct-border;
+            transition: background-color 0.2s ease;
 
-    &:focus {
-      outline: 2px solid $ct-header-bg;
-      outline-offset: 2px;
+            &:hover {
+                background-color: $ct-row-hover;
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        .customer-table-cell {
+            color: $ct-text;
+            padding: 10px 12px;
+            text-align: left;
+            border-right: 1px solid $ct-border;
+            vertical-align: middle;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &:last-child {
+                border-right: none;
+            }
+        }
     }
-  }
 
-  &-cell {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    box-sizing: border-box;
+    &-checkbox {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: $ct-header-bg;
 
-    &-expand {
-      width: 60px;
-      padding: 6px;
-      text-align: center;
-      vertical-align: middle;
+        &:focus {
+            outline: 2px solid $ct-header-bg;
+            outline-offset: 2px;
+        }
+    }
 
-      .customer-table-cell-expand-content {
+    &-cell {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        box-sizing: border-box;
+
+        &-expand {
+            width: 60px;
+            padding: 6px;
+            text-align: center;
+            vertical-align: middle;
+
+            .customer-table-cell-expand-content {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+            }
+
+            .customer-table-expand-separator {
+                width: 1px;
+                height: 24px;
+                background-color: $ct-border;
+                flex-shrink: 0;
+            }
+        }
+
+        &-unexpand {
+            width: 20px;
+        }
+    }
+
+    &-empty {
+        padding: 24px;
+        text-align: center;
+        color: #999;
+        font-size: 14px;
+    }
+
+    &-row-detail {
+        background-color: #f8f9fa;
+    }
+
+    &-detail-cell {
+        padding: 12px 16px;
+        border-bottom: 1px solid $ct-border;
+        vertical-align: top;
+    }
+
+    &-error {
+        color: red;
+        font-size: 12px;
+    }
+
+    &-loading {
+        padding: 12px;
+        text-align: center;
+        font-size: 14px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         gap: 8px;
-      }
 
-      .customer-table-expand-separator {
-        width: 1px;
-        height: 24px;
-        background-color: $ct-border;
-        flex-shrink: 0;
-      }
+        &__spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ccc;
+            border-top: 2px solid #333;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
     }
+}
 
-    &-unexpand {
-      width: 20px;
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
-  }
-
-  &-empty {
-    padding: 24px;
-    text-align: center;
-    color: #999;
-    font-size: 14px;
-  }
-
-  &-row-detail {
-    background-color: #f8f9fa;
-  }
-
-  &-detail-cell {
-    padding: 12px 16px;
-    border-bottom: 1px solid $ct-border;
-    vertical-align: top;
-  }
 }

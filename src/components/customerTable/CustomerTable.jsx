@@ -117,6 +117,23 @@ class CustomerTable extends React.PureComponent {
             ? visibleColumns.length + 1
             : visibleColumns.length || 1;
 
+        if (this.props.error) {
+            return (
+                <div className="customer-table customer-table-container customer-table-error">
+                    {this.props.error}
+                </div>
+            );
+        }
+
+        if (this.props.isLoading) {
+            return (
+                <div className="customer-table customer-table-container customer-table-loading">
+                    <div className="customer-table-loading__spinner"></div>
+                    <span>Loading...</span>
+                </div>
+            );
+        }
+
         return (
             <div className="customer-table customer-table-container">
                 <table className="customer-table-table">
