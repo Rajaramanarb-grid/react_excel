@@ -92,6 +92,8 @@ export class CustomFileInput extends Component {
         e.preventDefault();
 
         const { data } = this.state;
+        // Guad class for validation
+        if(!data?.length) return;
 
         const formattedData = data.map((row, index) => ({
             rowNumber: index + 1,
