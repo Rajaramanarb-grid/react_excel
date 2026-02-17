@@ -24,8 +24,6 @@ export class CustomFileInput extends Component {
             return;
         }
 
-        console.log(file);
-
         // Size Validation (5MB)
         const maxSize = 5 * 1024 * 1024;
         if (file.size > maxSize) {
@@ -62,7 +60,7 @@ export class CustomFileInput extends Component {
                     <input
                         type="text"
                         value={fileName}
-                        placeholder="Choose CSV file"
+                        placeholder="Upload"
                         readOnly
                         className="custom-file__input"
                     />
@@ -72,7 +70,7 @@ export class CustomFileInput extends Component {
                         className="custom-file__button"
                         onClick={this.handleButtonClick}
                     >
-                        Upload
+                        CHOOSE
                     </button>
 
                     <input
@@ -83,6 +81,18 @@ export class CustomFileInput extends Component {
                         className="custom-file__hidden"
                     />
                 </div>
+
+                <div className="custom-file__download">
+                    <div className="custom-file__download-item">
+                        <img src="" alt="" className=""/>
+                        <a href="" className="custom-file__download-link custom-file__download-link-1">DOWNLOAD TEMPLATE</a>
+                    </div>
+                    <div className="custom-file__download-item">
+                        <img src="" alt="" className=""/>
+                        <a href="" className="custom-file__download-link custom-file__download-link-2">DOWNLOAD INSTRUCTIONS</a>
+                    </div>
+                </div>
+
                 {this.state.error && (
                     <div className="custom-file__error">{this.state.error}</div>
                 )}
