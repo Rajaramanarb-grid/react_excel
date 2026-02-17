@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { isCSV } from "../utils/utility";
+import { postUpload } from "@/api/mockApi";
 
 export class UploadComponent extends Component {
     fileInputRef = React.createRef();
@@ -33,6 +34,14 @@ export class UploadComponent extends Component {
             const text = event.target?.result ?? "";
             const arrayOfObjects = this.parseToArrayOfObjects(text, file.name);
             console.log("File data (array of objects):", arrayOfObjects);
+
+            postUpload({ fileName: file.name, data: arrayOfObjects })
+                .then((response) => {
+                    console.log("API response:", response);
+                })
+                .catch((err) => {
+                    console.error("API error:", err);
+                });
         };
         reader.onerror = () => console.error("Failed to read file:", file.name);
         reader.readAsText(file);
