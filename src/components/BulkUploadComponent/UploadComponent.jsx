@@ -11,10 +11,9 @@ export class UploadComponent extends Component {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        
         if (!isCSV(file, file.type)) {
-            this.setState({
-                error: "Please upload a CSV file (.csv or valid CSV MIME type).",
-            });
+            this.setState({ error: "Please upload a CSV file (.csv or valid CSV MIME type)." });
             e.target.value = "";
             return;
         }
@@ -74,12 +73,15 @@ export class UploadComponent extends Component {
 
         // Build one object per data row: keys from headers, values from the row at same index.
         // Missing values default to "" so every header key exists on each object.
-        return dataRows.map((row) =>
-            headers.reduce((obj, key, i) => {
-                obj[key] = row[i];
-                return obj;
-            }, {}),
-        );
+        return dataRows.map((row, index) => ({
+            rowNumber: index + 1,
+            dateImplemented: row[0],
+            subCompanyName: row[1],
+            subCompanyID: row[2],
+            documentName: row[3],
+        }));
+
+        
     };
 
     render() {
