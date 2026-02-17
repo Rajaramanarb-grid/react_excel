@@ -1,4 +1,5 @@
 import { PureComponent } from "react";
+import UploadComponent from "./components/BulkUploadComponent/UploadComponent";
 
 export class App extends PureComponent {
     render() {
@@ -10,7 +11,7 @@ export class App extends PureComponent {
                     justifyContent: "center",
                 }}
             >
-                <CustomFileInput/>
+                <UploadComponent/>
             </div>
         );
     }

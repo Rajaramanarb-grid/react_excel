@@ -1,11 +1,23 @@
 import React, { Component } from "react";
+import { isCSV } from "../utils/utility";
 
 export class UploadComponent extends Component {
     fileInputRef = React.createRef();
 
+    state = { error: "" };
+
     handleFileChange = (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
+
+        
+        if (!isCSV(file)) {
+            this.setState({ error: "Please upload a CSV file (.csv or valid CSV MIME type)." });
+            e.target.value = "";
+            return;
+        }
+
+        this.setState({ error: "" });
 
         const details = {
             name: file.name,
@@ -34,7 +46,7 @@ export class UploadComponent extends Component {
      * @param {string} [fileName=""] - File name (reserved for future use, e.g. JSON vs CSV detection).
      * @returns {Array<Record<string, string>>} Array of objects, one per data row.
      */
-    parseToArrayOfObjects = (text, fileName = "") => {
+    parseToArrayOfObjects = (text) => {
         // Remove leading/trailing whitespace so empty files and stray newlines don't break parsing.
         const trimmed = text.trim();
         // Return empty array if file is empty or only whitespace.
@@ -60,22 +72,16 @@ export class UploadComponent extends Component {
         );
     };
 
-    // handleUploadClick = () => {
-    //     this.fileInputRef.current?.click();
-    // };
-
     render() {
+        const { error } = this.state;
         return (
             <div>
                 <input
                     ref={this.fileInputRef}
                     type="file"
                     onChange={this.handleFileChange}
-                    // style={{ display: "none" }}
                 />
-                {/* <button type="button" onClick={this.handleUploadClick}>
-                    Choose file
-                </button> */}
+                {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
             </div>
         );
     }
