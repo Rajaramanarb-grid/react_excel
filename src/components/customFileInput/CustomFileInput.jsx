@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import blueIcon from "../../assets/download-blue.svg";
+import redIcon from "../../assets/download-red.svg";
 import "./CustomFileInput.scss";
 
 export class CustomFileInput extends Component {
@@ -6,7 +8,6 @@ export class CustomFileInput extends Component {
         super(props);
         this.state = {
             fileName: "",
-            error: "",
         };
 
         this.fileRef = React.createRef();
@@ -24,27 +25,7 @@ export class CustomFileInput extends Component {
             return;
         }
 
-        // Size Validation (5MB)
-        const maxSize = 5 * 1024 * 1024;
-        if (file.size > maxSize) {
-            this.setState({
-                error: "File must be less than 5MB",
-            });
-            return;
-        }
-
-        // Accepts: 16-02-2026_test_data.csv OR 16_02_2026_test_data.csv
-        const fileNameRegex =
-            /^(0[1-9]|[12][0-9]|3[01])[-_](0[1-9]|1[0-2])[-_]\d{4}_test_data\.csv$/i;
-
-        if (!fileNameRegex.test(file.name)) {
-            this.setState({
-                error: "Invalid file name. Format should be dd-mm-yyyy_test_data.csv",
-            });
-            return;
-        }
-
-        this.setState({ fileName: file.name, error: "" });
+        this.setState({ fileName: file.name });
 
         if (this.props.onChange) {
             this.props.onChange(e);
@@ -52,22 +33,22 @@ export class CustomFileInput extends Component {
     };
 
     render() {
-        const { fileName } = this.state;
+        const { fileName, error } = this.state;
 
         return (
-            <div>
-                <div className="custom-file">
+            <div className="file-upload">
+                <div className="file-upload__input-wrapper">
                     <input
                         type="text"
                         value={fileName}
                         placeholder="Upload"
                         readOnly
-                        className="custom-file__input"
+                        className="file-upload__input"
                     />
 
                     <button
                         type="button"
-                        className="custom-file__button"
+                        className="file-upload__button"
                         onClick={this.handleButtonClick}
                     >
                         CHOOSE
@@ -78,34 +59,48 @@ export class CustomFileInput extends Component {
                         accept=".csv"
                         ref={this.fileRef}
                         onChange={this.handleFileChange}
-                        className="custom-file__hidden"
+                        className="file-upload__file-input"
                     />
                 </div>
 
-                <div className="custom-file__download">
-                    <div className="custom-file__download-item">
-                        <img src="" alt="" className="" />
+                {error && <div className="file-upload__error">{error}</div>}
+
+                <div className="file-upload__downloads">
+                    <div className="file-upload__download-item">
+                        <img
+                            src={redIcon}
+                            alt="download icon"
+                            className="file-upload__download-icon"
+                        />
                         <a
                             href=""
-                            className="custom-file__download-link custom-file__download-link-1"
+                            className="file-upload__download-link file-upload__download-link--template"
                         >
                             DOWNLOAD TEMPLATE
                         </a>
                     </div>
-                    <div className="custom-file__download-item">
-                        <img src="" alt="" className="" />
+                    <div className="file-upload__download-item">
+                        <img
+                            src={blueIcon}
+                            alt="download icon"
+                            className="file-upload__download-icon"
+                        />
                         <a
                             href=""
-                            className="custom-file__download-link custom-file__download-link-2"
+                            className="file-upload__download-link file-upload__download-link--instructions"
                         >
                             DOWNLOAD INSTRUCTIONS
                         </a>
                     </div>
                 </div>
 
-                {this.state.error && (
-                    <div className="custom-file__error">{this.state.error}</div>
-                )}
+                <div className="file-upload__divider"></div>
+
+                <div className="file-upload__actions">
+                    <button className="file-upload__action-button">
+                        Submit
+                    </button>
+                </div>
             </div>
         );
     }
