@@ -1,5 +1,4 @@
 import { PureComponent } from "react";
-import CustomFileInput from "./components/customFileInput/CustomFileInput";
 
 export class App extends PureComponent {
     render() {
