@@ -35,55 +35,68 @@ export class CustomFileInput extends Component {
     };
 
     /**
-     * Runs when the user selects a file. Updates displayed file name and notifies parent via onChange.
+     * Parses CSV text into trimmed rows (one pass). Returns [headers, dataRows].
+     */
+    parseCsvText = (text) => {
+        const trimmed = (text ?? "").trim();
+        if (!trimmed) return [[], []];
+        const rows = trimmed
+            .split("\n")
+            .map((row) => row.split(",").map((cell) => cell.trim()));
+        const headers = rows[0] ?? [];
+        const data = rows.slice(1);
+        return [headers, data];
+    };
+
+    /**
+     * Returns true if parsed headers match expected HEADERS (order and name, case-insensitive).
+     */
+    validateHeaders = (parsedHeaders) => {
+        const expected = this.HEADERS;
+        return (
+            parsedHeaders.length === expected.length &&
+            parsedHeaders.every(
+                (h, i) => h.toLowerCase() === expected[i].toLowerCase(),
+            )
+        );
+    };
+
+    /**
+     * Runs when the user selects a file. Validates CSV and header shape, then updates state.
      * @param {React.ChangeEvent<HTMLInputElement>} e - Change event from the file input.
      */
     handleFileChange = (e) => {
-        this.setState({ fileName: "", errorMes: "" }); // Clear previous file name and errors when a new file is selected.
-        const file = e.target.files[0];
+        this.setState({ fileName: "", errorMes: "" });
+        const file = e.target.files?.[0];
         if (!file) return;
 
-        if (!isCSV(file, file.type)) {
-            this.setState({
-                errorMes: "Please upload a CSV file",
-            });
+        if (!isCSV(file)) {
+            this.setState({ errorMes: "Please upload a CSV file" });
             e.target.value = "";
             return;
         }
 
         const reader = new FileReader();
-        reader.onload = async (event) => {
-            const text = event.target.result;
+        reader.onload = (event) => {
+            const text = event.target?.result ?? "";
+            const [originalHeaders, data] = this.parseCsvText(text);
 
-            const rows = text
-                .trim()
-                .split("\n")
-                .map((row) => row.split(","));
-
-            const originalHeaders = rows[0].map((h) => h.trim());
-
-            const isValidHeaders =
-                originalHeaders.length === this.HEADERS.length &&
-                originalHeaders.every(
-                    (header, index) =>
-                        header.toLowerCase() ===
-                        this.HEADERS[index].toLowerCase(),
-                );
-
-            if (!isValidHeaders) {
+            if (!this.validateHeaders(originalHeaders)) {
                 this.setState({ errorMes: "Invalid CSV Header" });
+                if (this.fileRef.current) this.fileRef.current.value = "";
                 return;
-            } else {
-                const csvData = rows.slice(1);
-                const trimmedData = csvData.map((row) =>
-                    row.map((cell) => cell.trim()),
-                );
-                this.setState({
-                    fileName: file.name,
-                    headers: originalHeaders,
-                    data: trimmedData,
-                });
             }
+
+            this.setState({
+                fileName: file.name,
+                headers: originalHeaders,
+                data,
+            });
+            if (this.fileRef.current) this.fileRef.current.value = "";
+        };
+        reader.onerror = () => {
+            this.setState({ errorMes: "Failed to read file" });
+            if (this.fileRef.current) this.fileRef.current.value = "";
         };
         reader.readAsText(file);
     };
