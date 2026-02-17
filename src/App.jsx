@@ -1,5 +1,5 @@
 import { PureComponent } from "react";
-import CsvTable from "./components/CsvTable/CsvTable";
+import CustomFileInput from "./components/customFileInput/CustomFileInput";
 
 export class App extends PureComponent {
     render() {
@@ -11,7 +11,7 @@ export class App extends PureComponent {
                     justifyContent: "center",
                 }}
             >
-                <CsvTable />
+                <CustomFileInput/>
             </div>
         );
     }

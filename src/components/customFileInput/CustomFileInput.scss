@@ -1,0 +1,135 @@
+.file-upload {
+    max-width: 980px;
+    width: 100%;
+
+    &__input-wrapper {
+        display: flex;
+        position: relative;
+        margin-bottom: 20px;
+        border: 1px solid #d0d0d0;
+        border-radius: 3px;
+        overflow: hidden;
+        background: white;
+        align-items: center;
+    }
+
+    &__input {
+        flex: 1;
+        padding: 18px 20px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        color: #b0b0b0;
+        background: transparent;
+
+        &::placeholder {
+            color: #b0b0b0;
+        }
+    }
+
+    &__button {
+        padding: 5px 10px;
+        border: 2px solid #e8a4a4;
+        background: white;
+        color: #c9a0a0;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+        border-radius: 4px;
+        margin-right: 10px;
+
+        &:hover {
+            background: #fef9f9;
+            border-color: #e09999;
+            color: #b88888;
+        }
+
+        &:active {
+            background: #fef5f5;
+        }
+    }
+
+    &__file-input {
+        display: none;
+    }
+
+    &__error {
+        color: #d32f2f;
+        margin-top: 8px;
+        margin-bottom: 12px;
+        font-size: 13px;
+        padding-left: 4px;
+    }
+
+    &__downloads {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    &__download-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    &__download-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    &__download-link {
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 700;
+        transition: text-decoration 0.2s ease;
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        &--template {
+            color: #d32f2f;
+        }
+
+        &--instructions {
+            color: #1976d2;
+        }
+    }
+
+    &__divider {
+        width: 100%;
+        height: 1px;
+        background: #d0d0d0;
+        margin: 20px 0;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    &__action-button {
+        padding: 15px 80px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        border-radius: 25px;
+        background: #d32f2f;
+        color: white;
+
+        &:hover {
+            background: white;
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+        }
+    }
+}
