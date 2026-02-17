@@ -1,10 +1,7 @@
 /**
  * CSV MIME types (RFC 4180 registers text/csv; application/csv is sometimes used).
  */
-const CSV_MIME_TYPES = [
-    "text/csv",
-    "application/csv",
-];
+const CSV_MIME_TYPES = ["text/csv", "application/csv"];
 
 /**
  * Checks if the given input is a CSV file by extension and/or MIME type.
@@ -33,12 +30,11 @@ export function isCSV(fileOrFileName, mimeType) {
     }
 
     const hasCsvExtension =
-        typeof fileName === "string" &&
-        fileName.toLowerCase().endsWith(".csv");
+        typeof fileName === "string" && fileName.toLowerCase().endsWith(".csv");
 
     const hasCsvMimeType =
         typeof type === "string" &&
         CSV_MIME_TYPES.includes(type.toLowerCase().trim());
 
-    return hasCsvExtension || hasCsvMimeType;
+    return hasCsvExtension && hasCsvMimeType;
 }

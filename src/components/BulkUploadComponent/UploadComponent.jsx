@@ -11,9 +11,10 @@ export class UploadComponent extends Component {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        
-        if (!isCSV(file)) {
-            this.setState({ error: "Please upload a CSV file (.csv or valid CSV MIME type)." });
+        if (!isCSV(file, file.type)) {
+            this.setState({
+                error: "Please upload a CSV file (.csv or valid CSV MIME type).",
+            });
             e.target.value = "";
             return;
         }
@@ -77,7 +78,7 @@ export class UploadComponent extends Component {
             headers.reduce((obj, key, i) => {
                 obj[key] = row[i];
                 return obj;
-            }, {})
+            }, {}),
         );
     };
 
@@ -90,7 +91,9 @@ export class UploadComponent extends Component {
                     type="file"
                     onChange={this.handleFileChange}
                 />
-                {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
+                {error && (
+                    <div style={{ color: "red", marginTop: 8 }}>{error}</div>
+                )}
             </div>
         );
     }
