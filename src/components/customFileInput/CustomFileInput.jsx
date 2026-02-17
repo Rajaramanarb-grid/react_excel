@@ -8,64 +8,16 @@ export class CustomFileInput extends Component {
         super(props);
         this.state = {
             fileName: "",
+            errorMes:"",
         };
 
         this.fileRef = React.createRef();
     }
 
-    handleButtonClick = () => {
-        this.fileRef.current.click();
-    };
 
-    handleFileChange = (e) => {
-        const file = e.target.files[0];
-
-        if (!file) {
-            alert("File is required");
-            return;
-        }
-
-        this.setState({ fileName: file.name });
-
-        if (this.props.onChange) {
-            this.props.onChange(e);
-        }
-    };
-
-    render() {
-        const { fileName, error } = this.state;
-
-        return (
-            <div className="file-upload">
-                <div className="file-upload__input-wrapper">
-                    <input
-                        type="text"
-                        value={fileName}
-                        placeholder="Upload"
-                        readOnly
-                        className="file-upload__input"
-                    />
-
-                    <button
-                        type="button"
-                        className="file-upload__button"
-                        onClick={this.handleButtonClick}
-                    >
-                        CHOOSE
-                    </button>
-
-                    <input
-                        type="file"
-                        accept=".csv"
-                        ref={this.fileRef}
-                        onChange={this.handleFileChange}
-                        className="file-upload__file-input"
-                    />
-                </div>
-
-                {error && <div className="file-upload__error">{error}</div>}
-
-                <div className="file-upload__downloads">
+    additionalLinkInformation = () =>{
+        return(
+             <div className="file-upload__downloads">
                     <div className="file-upload__download-item">
                         <img
                             src={redIcon}
@@ -93,6 +45,58 @@ export class CustomFileInput extends Component {
                         </a>
                     </div>
                 </div>
+        )
+    }
+
+    handleButtonClick = () => {
+        this.fileRef.current.click();
+    };
+
+    handleFileChange = (e) => {
+        const file = e.target.files[0];
+
+        this.setState({ fileName: file.name });
+
+        if (this.props.onChange) {
+            this.props.onChange(e);
+        }
+
+        // Add validation here:
+    };
+
+    render() {
+        const { fileName, error } = this.state;
+
+        return (
+            <div className="file-upload">
+                <div className="file-upload__input-wrapper">
+                    <input
+                        type="text"
+                        value={fileName}
+                        placeholder="Upload"
+                        readOnly
+                        className="file-upload__input"
+                    />
+
+                    <button
+                        type="button"
+                        className="file-upload__button"
+                        onClick={this.handleButtonClick}
+                    >
+                        CHOOSE
+                    </button>
+
+                    <input
+                        type="file"
+                        ref={this.fileRef}
+                        onChange={this.handleFileChange}
+                        className="file-upload__file-input"
+                    />
+                </div>
+
+                {error && <div className="file-upload__error">{error}</div>}
+
+               {this.additionalLinkInformation()}
 
                 <div className="file-upload__divider"></div>
 
