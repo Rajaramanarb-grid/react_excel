@@ -93,7 +93,9 @@ export class UploadComponent extends Component {
                     type="file"
                     onChange={this.handleFileChange}
                 />
-                {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
+                {error && (
+                    <div style={{ color: "red", marginTop: 8 }}>{error}</div>
+                )}
             </div>
         );
     }

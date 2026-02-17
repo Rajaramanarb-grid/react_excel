@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import blueIcon from "../../assets/download-blue.svg";
 import redIcon from "../../assets/download-red.svg";
 import "./CustomFileInput.scss";
+import { isCSV } from "../utils/utility";
 
 /**
  * Custom file upload UI: text input (shows chosen file name), "CHOOSE" button that opens
@@ -12,11 +13,20 @@ export class CustomFileInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileName: "",   // Display name of the currently selected file (shown in the text input).
-            errorMes: "",   // Error message to show below the input (e.g. validation errors).
+            fileName: "", // Display name of the currently selected file (shown in the text input).
+            errorMes: "", // Error message to show below the input (e.g. validation errors).
+            headers: [], // Parsed headers from the CSV file (for potential future use).
+            data: [], // Parsed data rows from the CSV file (for potential future use).
         };
         // Ref to the hidden file input so we can programmatically trigger a click.
         this.fileRef = React.createRef();
+
+        this.HEADERS = [
+            "Date Implemented",
+            "SubCompany Name",
+            "SubCompany ID",
+            "Document Name",
+        ];
     }
 
     /** Programmatically opens the native file picker by clicking the hidden file input. */
@@ -29,17 +39,70 @@ export class CustomFileInput extends Component {
      * @param {React.ChangeEvent<HTMLInputElement>} e - Change event from the file input.
      */
     handleFileChange = (e) => {
+        this.setState({ fileName: "", errorMes: "" }); // Clear previous file name and errors when a new file is selected.
         const file = e.target.files[0];
         if (!file) return;
 
-        this.setState({ fileName: file.name });
-
-        if (this.props.onChange) {
-            this.props.onChange(e);
+        if (!isCSV(file, file.type)) {
+            this.setState({
+                errorMes: "Please upload a CSV file",
+            });
+            e.target.value = "";
+            return;
         }
-        // Optional: add validation here (e.g. file type/size) and setState({ errorMes: "..." }).
+
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            const text = event.target.result;
+
+            const rows = text
+                .trim()
+                .split("\n")
+                .map((row) => row.split(","));
+
+            const originalHeaders = rows[0].map((h) => h.trim());
+
+            const isValidHeaders =
+                originalHeaders.length === this.HEADERS.length &&
+                originalHeaders.every(
+                    (header, index) =>
+                        header.toLowerCase() ===
+                        this.HEADERS[index].toLowerCase(),
+                );
+
+            if (!isValidHeaders) {
+                this.setState({ errorMes: "Invalid CSV Header" });
+                return;
+            } else {
+                const csvData = rows.slice(1);
+                const trimmedData = csvData.map((row) =>
+                    row.map((cell) => cell.trim()),
+                );
+                this.setState({
+                    fileName: file.name,
+                    headers: originalHeaders,
+                    data: trimmedData,
+                });
+            }
+        };
+        reader.readAsText(file);
     };
 
+    handleSubmit = (e) => {
+        e.preventDefault();
+
+        const { data } = this.state;
+
+        const formattedData = data.map((row, index) => ({
+            rowNumber: index + 1,
+            dateImplemented: row[0],
+            subCompanyName: row[1],
+            subCompanyID: row[2],
+            documentName: row[3],
+        }));
+
+        console.log(formattedData);
+    };
 
     /**
      * Renders the optional download links block (template + instructions).
@@ -82,7 +145,7 @@ export class CustomFileInput extends Component {
         const { fileName, errorMes } = this.state;
 
         return (
-            <div className="file-upload">
+            <form className="file-upload" onSubmit={this.handleSubmit}>
                 {/* Text input shows selected file name; read-only so user must use CHOOSE to pick a file. */}
                 <div className="file-upload__input-wrapper">
                     <input
@@ -110,18 +173,23 @@ export class CustomFileInput extends Component {
                     />
                 </div>
 
-                {errorMes && <div className="file-upload__error">{errorMes}</div>}
+                {errorMes && (
+                    <div className="file-upload__error">{errorMes}</div>
+                )}
 
                 {this.additionalLinkInformation()}
 
                 <div className="file-upload__divider"></div>
 
                 <div className="file-upload__actions">
-                    <button className="file-upload__action-button">
+                    <button
+                        className="file-upload__action-button"
+                        type="submit"
+                    >
                         Submit
                     </button>
                 </div>
-            </div>
+            </form>
         );
     }
 }
