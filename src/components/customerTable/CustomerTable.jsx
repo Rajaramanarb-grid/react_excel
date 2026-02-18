@@ -2,15 +2,6 @@ import React from "react";
 import "@/components/customerTable/CustomerTable.scss";
 import ExcessDetails from "@/components/customerTable/ExcessDetails";
 import ExpandCollapseButton from "@/components/customerTable/ExpandCollapseButton";
-import {
-    validateFirstName,
-    validateLastName,
-    validateCardNumber,
-    validateExpMonth,
-    validateExpYear,
-    validateCVV,
-    validateSSN,
-} from "@/utils/FormUtils";
 import FormModel from "@/components/FormModel/FormModel";
 
 class CustomerTable extends React.PureComponent {
@@ -29,34 +20,6 @@ class CustomerTable extends React.PureComponent {
             selectedRowData: null,
         };
     }
-
-    validateRow = (rowArray, columns) => {
-        const validationMap = {
-            "First Name": validateFirstName,
-            "Last Name": validateLastName,
-            "Card Number": validateCardNumber,
-            "Exp Month": validateExpMonth,
-            "Exp Year": validateExpYear,
-            CVV: validateCVV,
-            SSN: validateSSN,
-        };
-
-        for (let i = 0; i < columns.length; i++) {
-            const columnName = columns[i];
-            const value = rowArray[i] || "";
-            const validator = validationMap[columnName];
-
-            if (validator) {
-                const error = validator(value);
-                if (error) {
-                    this.setState({ allRowsValid: false });
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    };
 
     handleCellClick = (rowData, columns) => {
         const rowDetails = columns.map((column, index) => ({
@@ -89,8 +52,12 @@ class CustomerTable extends React.PureComponent {
         const excessColumns = columns.slice(effectiveCount);
         const hasExcess = excessColumns.length > 0;
 
-        const getRowArray = (row) =>
-            Array.isArray(row) ? row : columns.map((col) => row[col]);
+        const getRowArray = (row) => [
+            row.dateImplemented,
+            row.subCompanyName,
+            row.subCompanyID,
+            row.documentName,
+        ];
 
         const handleExpandClick = (rowIndex) => {
             this.setState((prev) => ({
@@ -155,10 +122,11 @@ class CustomerTable extends React.PureComponent {
                         ) : (
                             data.map((row, rowIndex) => {
                                 const rowArray = getRowArray(row);
-                                const isRowValid = this.validateRow(
-                                    rowArray,
-                                    columns,
-                                );
+                                // const isRowValid = this.validateRow(
+                                //     rowArray,
+                                //     columns,
+                                // );
+                                const isRowValid = row.statusKey === 0;
                                 const visibleCells = rowArray.slice(
                                     0,
                                     effectiveCount,
