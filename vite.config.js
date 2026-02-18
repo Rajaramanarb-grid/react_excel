@@ -20,10 +20,35 @@ export default defineConfig({
                                 const received = body ? JSON.parse(body) : {};
                                 res.end(
                                     JSON.stringify({
-                                        success: true,
-                                        message: "Upload received",
-                                        received,
-                                    })
+                                            "errors": null,
+                                            "responseCode": 0,
+                                            "responseDescription": "Success",
+                                            "responseDetailCode": 0,
+                                            "message": null,
+                                            "exceptionMessage": null,
+                                            "exceptionType": null,
+                                            "stackTrace": null,
+                                            "responseDetailDescription": "Success",
+                                            "data": {
+                                                "webBundleList": [
+                                                    {
+                                                        "rowNumber": 1,
+                                                        "statusKey": 0,
+                                                        "status": "Verified"
+                                                    },
+                                                    {
+                                                        "rowNumber": 2,
+                                                        "statusKey": 10,
+                                                        "status": "Duplicate Sub Company ID"
+                                                    },
+                                                    {
+                                                        "rowNumber": 3,
+                                                        "statusKey": 10,
+                                                        "status": "Duplicate Sub Company ID"
+                                                    }
+                                                ]
+                                            }
+                                        })
                                 );
                             } catch {
                                 res.statusCode = 400;

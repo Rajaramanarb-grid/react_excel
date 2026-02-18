@@ -3,7 +3,7 @@ import blueIcon from "../../assets/download-blue.svg";
 import redIcon from "../../assets/download-red.svg";
 import "./CustomFileInput.scss";
 import { isCSV } from "../utils/utility";
-import { postUpload } from "../../api/mockApi";
+import { validate } from "../../api/mockApi";
 
 /**
  * Custom file upload UI: text input (shows chosen file name), "CHOOSE" button that opens
@@ -118,7 +118,9 @@ export class CustomFileInput extends Component {
             subCompanyID: row[2],
             documentName: row[3],
         }));
-          postUpload({ WebBundleList:[...formattedData] })
+
+
+        validate({ WebBundleList:[...formattedData] })
         .then((response) => {
             console.log("API response:", response);
         })

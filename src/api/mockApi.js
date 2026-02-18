@@ -10,7 +10,7 @@ export const MOCK_API_URL = "/api/upload";
  * @param {{ fileName?: string, data?: unknown }} payload - Object to send (e.g. { fileName, data: arrayOfObjects }).
  * @returns {Promise<Record<string, unknown>>} Parsed JSON response from the mock API.
  */
-export async function postUpload(payload) {
+export async function validate(payload) {
     const response = await fetch(MOCK_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
