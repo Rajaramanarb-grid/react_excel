@@ -18,6 +18,7 @@ export class CustomFileInput extends Component {
             errorMes: "", // Error message to show below the input (e.g. validation errors).
             headers: [], // Parsed headers from the CSV file (for potential future use).
             data: [], // Parsed data rows from the CSV file (for potential future use).
+            TableData: [], // Merged data from the CSV file and the API response.
         };
         // Ref to the hidden file input so we can programmatically trigger a click.
         this.fileRef = React.createRef();
@@ -115,8 +116,6 @@ export class CustomFileInput extends Component {
         // Guad class for validation
         if(!data?.length) return;
 
-      
-
         const [dateImplemented, subCompanyName, subCompanyID, documentName] = this.HEADERS;
         const formattedData = data.map((row, index) => ({
             rowNumber: index + 1,
@@ -137,6 +136,7 @@ export class CustomFileInput extends Component {
                     return { ...row, ...apiRow };
                 });
                 console.log("Merged (formattedData + API by rowNumber):", mergedByRowNumber);
+                this.setState({ TableData: mergedByRowNumber });
             })
             .catch((err) => {
                 console.error("API error:", err);
