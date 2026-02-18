@@ -45,7 +45,13 @@ export class CustomFileInput extends Component {
             .split("\n")
             .map((row) => row.split(",").map((cell) => cell.trim()));
         const headers = rows[0] ?? [];
-        const data = rows.slice(1);
+        const dataRows = rows.slice(1);
+        const data = dataRows.map((row) =>
+            headers.reduce((obj, header, i) => {
+                obj[header] = row[i];
+                return obj;
+            }, {})
+        );
         return [headers, data];
     };
 
@@ -111,24 +117,30 @@ export class CustomFileInput extends Component {
 
       
 
+        const [dateImplemented, subCompanyName, subCompanyID, documentName] = this.HEADERS;
         const formattedData = data.map((row, index) => ({
             rowNumber: index + 1,
-            dateImplemented: row[0],
-            subCompanyName: row[1],
-            subCompanyID: row[2],
-            documentName: row[3],
+            dateImplemented: row[dateImplemented],
+            subCompanyName: row[subCompanyName],
+            subCompanyID: row[subCompanyID],
+            documentName: row[documentName],
         }));
 
 
-        validate({ WebBundleList:[...formattedData] })
-        .then((response) => {
-            console.log("API response:", response);
-        })
-        .catch((err) => {
-            console.error("API error:", err);
-        });
+        validate({ WebBundleList: [...formattedData] })
+            .then((response) => {
+                const apiList = response?.data?.webBundleList ?? [];
+                if (!apiList.length) return;
 
-        console.log(formattedData);
+                const mergedByRowNumber = formattedData.map((row) => {
+                    const apiRow = apiList.find((r) => r.rowNumber === row.rowNumber);
+                    return { ...row, ...apiRow };
+                });
+                console.log("Merged (formattedData + API by rowNumber):", mergedByRowNumber);
+            })
+            .catch((err) => {
+                console.error("API error:", err);
+            });
     };
 
     /**
