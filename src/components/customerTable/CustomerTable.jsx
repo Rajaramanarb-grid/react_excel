@@ -18,10 +18,14 @@ class CustomerTable extends React.PureComponent {
             allRowsValid: true,
             isModalOpen: false,
             selectedRowData: null,
+            selectedRowStatusKey: null,
+            selectedRowIndex: null,
+            status: null,
         };
     }
 
-    handleCellClick = (rowData, columns) => {
+    handleCellClick = (rowData, columns, status, statusKey, rowIndex) => {
+        console.log(rowData);
         const rowDetails = columns.map((column, index) => ({
             label: column,
             value: rowData[index],
@@ -30,13 +34,28 @@ class CustomerTable extends React.PureComponent {
         this.setState({
             isModalOpen: true,
             selectedRowData: rowDetails,
+            selectedRowStatusKey: statusKey,
+            selectedRowIndex: rowIndex,
+            status: status,
         });
+    };
+
+    handleSaveRow = (updatedData) => {
+        const { selectedRowIndex } = this.state;
+        const { onRowUpdate } = this.props;
+
+        if (onRowUpdate && selectedRowIndex !== null) {
+            onRowUpdate(selectedRowIndex, updatedData);
+        }
     };
 
     handleCloseModal = () => {
         this.setState({
             isModalOpen: false,
             selectedRowData: null,
+            selectedRowStatusKey: null,
+            selectedRowIndex: null,
+            status: null,
         });
     };
 
@@ -122,10 +141,8 @@ class CustomerTable extends React.PureComponent {
                         ) : (
                             data.map((row, rowIndex) => {
                                 const rowArray = getRowArray(row);
-                                // const isRowValid = this.validateRow(
-                                //     rowArray,
-                                //     columns,
-                                // );
+                                const status = row.status;
+                                const statusKey = row.statusKey;
                                 const isRowValid = row.statusKey === 0;
                                 const visibleCells = rowArray.slice(
                                     0,
@@ -190,6 +207,9 @@ class CustomerTable extends React.PureComponent {
                                                                 this.handleCellClick(
                                                                     rowArray,
                                                                     columns,
+                                                                    status,
+                                                                    statusKey,
+                                                                    rowIndex,
                                                                 ),
                                                             style: {
                                                                 cursor: "pointer",
@@ -224,10 +244,12 @@ class CustomerTable extends React.PureComponent {
                     </tbody>
                 </table>
 
-                {isModalOpen && (
+                {isModalOpen && this.state.selectedRowStatusKey !== 0 && (
                     <FormModel
                         selectedRowData={selectedRowData}
                         onClose={this.handleCloseModal}
+                        onSave={this.handleSaveRow}
+                        errorMessage={this.state.status}
                     />
                 )}
             </div>

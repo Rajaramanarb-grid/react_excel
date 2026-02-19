@@ -149,6 +149,23 @@ export class CustomFileInput extends Component {
             });
     };
 
+    handleRowUpdate = (rowIndex, updatedData) => {
+        this.setState((prevState) => {
+            const updatedTableData = [...prevState.TableData];
+            const row = updatedTableData[rowIndex];
+            
+            updatedTableData[rowIndex] = {
+                ...row,
+                dateImplemented: updatedData["Date Implemented"],
+                subCompanyName: updatedData["SubCompany Name"],
+                subCompanyID: updatedData["SubCompany ID"],
+                documentName: updatedData["Document Name"],
+            };
+            
+            return { TableData: updatedTableData };
+        });
+    };
+
     /**
      * Renders the optional download links block (template + instructions).
      * Replace empty href="" with real URLs when templates/instructions are available.
@@ -243,6 +260,7 @@ export class CustomFileInput extends Component {
                         data={TableData}
                         visibleColumnCount={4}
                         validation={true}
+                        onRowUpdate={this.handleRowUpdate}
                     />
                 )}
             </>
