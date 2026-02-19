@@ -3,7 +3,6 @@ $tc-border: #e2e8f0;
 $tc-header-bg: #1e3a5f;
 $tc-header-text: #ffffff;
 $tc-row-bg: #ffffff;
-$tc-row-hover: #f1f5f9;
 $tc-text: #334155;
 $tc-radius: 8px;
 $tc-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -53,41 +52,10 @@ $tc-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
     }
 
-    &__expand-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px;
-        height: 28px;
-        padding: 0;
-        border: none;
-        border-radius: 4px;
-        background: transparent;
-        color: $tc-text;
-        cursor: pointer;
-        transition: background-color 0.15s ease, color 0.15s ease;
-
-        &:hover {
-            background-color: $tc-row-hover;
-            color: $tc-header-bg;
-        }
-
-        &:focus-visible {
-            outline: 2px solid $tc-header-bg;
-            outline-offset: 2px;
-        }
-    }
-
-    &__expand-icon {
-        width: 18px;
-        height: 18px;
-    }
-
     &__body {
         .table-component__row {
             background-color: $tc-row-bg;
             border-bottom: 1px solid $tc-border;
-            transition: background-color 0.15s ease;
 
             &:last-child {
                 border-bottom: none;
@@ -103,9 +71,6 @@ $tc-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
                 }
             }
 
-            &:hover {
-                background-color: $tc-row-hover;
-            }
         }
 
         .table-component__td {
@@ -133,4 +98,16 @@ $tc-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         text-align: center;
         font-style: italic;
     }
+
+    &__row--expanded {
+        background-color: #f8fafc;
+
+    }
+
+    &__td--extra {
+        padding: 0;
+        border-bottom: 1px solid $tc-border;
+        vertical-align: top;
+    }
+
 }

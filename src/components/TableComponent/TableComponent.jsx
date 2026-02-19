@@ -1,37 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import "@/components/TableComponent/TableComponent.scss";
+import ExtraColumnsContent from "@/components/TableComponent/ExtraColumnsContent";
+import ExpandIcon from "@/components/TableComponent/ExpandIcon";
 
-const DEFAULT_VISIBLE_COLUMNS = 7;
-
-function ExpandIcon({ onClick, ariaLabel }) {
-    return (
-        <button
-            type="button"
-            className="table-component__expand-btn"
-            onClick={onClick}
-            aria-label={ariaLabel}
-            title="Show extra columns"
-        >
-            <svg
-                className="table-component__expand-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            >
-                <polyline points="9 18 15 12 9 6" />
-            </svg>
-        </button>
-    );
-}
+const DEFAULT_VISIBLE_COLUMNS = 5;
 
 function TableComponent({
     headers = [],
     data = [],
     visibleColumnCount = DEFAULT_VISIBLE_COLUMNS,
 }) {
+    const [expandedRowIndex, setExpandedRowIndex] = useState(null);
+
     const visibleHeaders =
         visibleColumnCount != null && visibleColumnCount >= 0
             ? headers.slice(0, visibleColumnCount)
@@ -39,16 +19,16 @@ function TableComponent({
     const excessHeaders = headers.slice(visibleColumnCount);
     const hasExcessColumns = excessHeaders.length > 0;
 
-    const handleExpandClick = (row) => {
-        const lines = excessHeaders.map(
-            (key) => `${key}: ${row[key] != null ? String(row[key]) : ""}`
+    const handleExpandClick = (rowIndex) => {
+        setExpandedRowIndex((prev) =>
+            prev === rowIndex ? null : rowIndex
         );
-        alert(lines.join("\n"));
     };
 
     const colSpanEmpty = hasExcessColumns
         ? visibleHeaders.length + 1
         : visibleHeaders.length || 1;
+    const colSpanExpand = visibleHeaders.length + 1;
 
     return (
         <div className="table-component">
@@ -83,29 +63,49 @@ function TableComponent({
                         </tr>
                     ) : (
                         data.map((row, rowIndex) => (
-                            <tr
-                                key={rowIndex}
-                                className="table-component__row"
-                            >
-                                {hasExcessColumns && (
-                                    <td className="table-component__td table-component__td--expand">
-                                        <ExpandIcon
-                                            onClick={() =>
-                                                handleExpandClick(row)
-                                            }
-                                            ariaLabel={`Show extra columns for row ${rowIndex + 1}`}
-                                        />
-                                    </td>
-                                )}
-                                {visibleHeaders.map((key, colIndex) => (
-                                    <td
-                                        key={colIndex}
-                                        className="table-component__td"
-                                    >
-                                        {row[key]}
-                                    </td>
-                                ))}
-                            </tr>
+                            <React.Fragment key={rowIndex}>
+                                <tr className="table-component__row">
+                                    {hasExcessColumns && (
+                                        <td className="table-component__td table-component__td--expand">
+                                            <ExpandIcon
+                                                onClick={() =>
+                                                    handleExpandClick(rowIndex)
+                                                }
+                                                ariaLabel={
+                                                    expandedRowIndex === rowIndex
+                                                        ? `Collapse extra columns for row ${rowIndex + 1}`
+                                                        : `Show extra columns for row ${rowIndex + 1}`
+                                                }
+                                                isExpanded={
+                                                    expandedRowIndex === rowIndex
+                                                }
+                                            />
+                                        </td>
+                                    )}
+                                    {visibleHeaders.map((key, colIndex) => (
+                                        <td
+                                            key={colIndex}
+                                            className="table-component__td"
+                                        >
+                                            {row[key]}
+                                        </td>
+                                    ))}
+                                </tr>
+                                {hasExcessColumns &&
+                                    expandedRowIndex === rowIndex && (
+                                        <tr className="table-component__row table-component__row--expanded">
+                                            <td
+                                                colSpan={colSpanExpand}
+                                                className="table-component__td table-component__td--extra"
+                                            >
+                                                <ExtraColumnsContent
+                                                    headers={excessHeaders}
+                                                    row={row}
+                                                />
+                                            </td>
+                                        </tr>
+                                    )}
+                            </React.Fragment>
                         ))
                     )}
                 </tbody>

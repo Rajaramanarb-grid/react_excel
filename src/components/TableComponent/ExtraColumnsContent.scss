@@ -1,0 +1,38 @@
+// ExtraColumnsContent – key-value list for expanded row (separate component styles)
+$extra-border: #e5e7eb;
+$extra-key-color: #1f2937;
+$extra-value-color: #4b5563;
+
+.extra-columns {
+    background-color: #ffffff;
+    padding: 0 16px;
+
+    &__row {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid $extra-border;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    &__key {
+        font-weight: 700;
+        font-size: 0.875rem;
+        color: $extra-key-color;
+        margin: 0;
+        min-width: 0;
+        flex-shrink: 0;
+    }
+
+    &__value {
+        font-weight: 400;
+        font-size: 0.875rem;
+        color: $extra-value-color;
+        margin: 0;
+        min-width: 0;
+    }
+}

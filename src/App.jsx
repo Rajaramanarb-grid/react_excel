@@ -10,7 +10,7 @@ const TABLE_HEADERS = [
     "Type",
     "Region",
     "Owner",
-    "Updated At",
+    // "Updated At",
     // "Status",
     // "Actions",
 ];
