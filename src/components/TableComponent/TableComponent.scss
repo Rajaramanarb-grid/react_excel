@@ -49,7 +49,22 @@ $tc-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
                 padding: 8px;
                 text-align: center;
             }
+
+            &--checkbox {
+                width: 44px;
+                min-width: 44px;
+                padding: 8px;
+                text-align: center;
+            }
         }
+    }
+
+    &__checkbox {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        cursor: pointer;
+        accent-color: $tc-header-bg;
     }
 
     &__body {
@@ -84,6 +99,13 @@ $tc-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
             }
 
             &--expand {
+                width: 44px;
+                min-width: 44px;
+                padding: 8px;
+                text-align: center;
+            }
+
+            &--checkbox {
                 width: 44px;
                 min-width: 44px;
                 padding: 8px;

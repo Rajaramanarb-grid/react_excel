@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "@/components/TableComponent/TableComponent.scss";
 import ExtraColumnsContent from "@/components/TableComponent/ExtraColumnsContent";
 import ExpandIcon from "@/components/TableComponent/ExpandIcon";
 
-const DEFAULT_VISIBLE_COLUMNS = 5;
-
 function TableComponent({
     headers = [],
     data = [],
-    visibleColumnCount = DEFAULT_VISIBLE_COLUMNS,
+    visibleColumnCount = 7,
+    validation,
 }) {
     const [expandedRowIndex, setExpandedRowIndex] = useState(null);
+    const [selectedRows, setSelectedRows] = useState(new Set());
+    const headerCheckboxRef = useRef(null);
 
     const visibleHeaders =
         visibleColumnCount != null && visibleColumnCount >= 0
@@ -19,16 +20,51 @@ function TableComponent({
     const excessHeaders = headers.slice(visibleColumnCount);
     const hasExcessColumns = excessHeaders.length > 0;
 
+    const showValidation = Boolean(validation);
+
     const handleExpandClick = (rowIndex) => {
         setExpandedRowIndex((prev) =>
             prev === rowIndex ? null : rowIndex
         );
     };
 
-    const colSpanEmpty = hasExcessColumns
-        ? visibleHeaders.length + 1
-        : visibleHeaders.length || 1;
-    const colSpanExpand = visibleHeaders.length + 1;
+    // const allSelected =
+    //     data.length > 0 && selectedRows.size === data.length;
+    // const someSelected = selectedRows.size > 0;
+
+    // const handleHeaderCheckboxChange = () => {
+    //     if (allSelected) {
+    //         setSelectedRows(new Set());
+    //     } else {
+    //         setSelectedRows(new Set(data.map((_, i) => i)));
+    //     }
+    // };
+
+    const handleRowCheckboxChange = (rowIndex) => {
+        setSelectedRows((prev) => {
+            const next = new Set(prev);
+            if (next.has(rowIndex)) {
+                next.delete(rowIndex);
+            } else {
+                next.add(rowIndex);
+            }
+            return next;
+        });
+    };
+
+    const colSpanEmpty =
+        (hasExcessColumns ? 1 : 0) +
+        (showValidation ? 1 : 0) +
+        visibleHeaders.length;
+    const colSpanExpand =
+        (hasExcessColumns ? 1 : 0) +
+        (showValidation ? 1 : 0) +
+        visibleHeaders.length;
+
+    // useEffect(() => {
+    //     const el = headerCheckboxRef.current;
+    //     if (el) el.indeterminate = someSelected && !allSelected;
+    // }, [someSelected, allSelected]);
 
     return (
         <div className="table-component">
@@ -40,6 +76,21 @@ function TableComponent({
                                 className="table-component__th table-component__th--expand"
                                 aria-label="Expand row"
                             />
+                        )}
+                        {showValidation && (
+                            <th
+                                className="table-component__th table-component__th--checkbox"
+                                aria-label="Select all"
+                            >
+                                <input
+                                    type="checkbox"
+                                    className="table-component__checkbox"
+                                    ref={headerCheckboxRef}
+                                    //checked={allSelected}
+                                    //onChange={handleHeaderCheckboxChange}
+                                    aria-label="Select all rows"
+                                />
+                            </th>
                         )}
                         {visibleHeaders.map((key, index) => (
                             <th
@@ -82,6 +133,19 @@ function TableComponent({
                                             />
                                         </td>
                                     )}
+                                    {showValidation && (
+                                        <td className="table-component__td table-component__td--checkbox">
+                                            <input
+                                                type="checkbox"
+                                                className="table-component__checkbox"
+                                                checked={selectedRows.has(rowIndex)}
+                                                onChange={() =>
+                                                    handleRowCheckboxChange(rowIndex)
+                                                }
+                                                aria-label={`Select row ${rowIndex + 1}`}
+                                            />
+                                        </td>
+                                    )}
                                     {visibleHeaders.map((key, colIndex) => (
                                         <td
                                             key={colIndex}
@@ -91,8 +155,7 @@ function TableComponent({
                                         </td>
                                     ))}
                                 </tr>
-                                {hasExcessColumns &&
-                                    expandedRowIndex === rowIndex && (
+                                {hasExcessColumns && expandedRowIndex === rowIndex && (
                                         <tr className="table-component__row table-component__row--expanded">
                                             <td
                                                 colSpan={colSpanExpand}

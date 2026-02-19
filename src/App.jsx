@@ -10,9 +10,9 @@ const TABLE_HEADERS = [
     "Type",
     "Region",
     "Owner",
-    // "Updated At",
-    // "Status",
-    // "Actions",
+    "Updated At",
+    "Status",
+    "Actions",
 ];
 
 // Data: array of objects; keys match TABLE_HEADERS
@@ -40,19 +40,7 @@ const TABLE_DATA = [
         "Updated At": "2/16/2026",
         "Status": "Pending",
         "Actions": "View",
-    },
-    // {
-    //     name: "Doc3",
-    //     dateImplemented: "2/18/2026",
-    //     subCompanyName: "Global Inc",
-    //     subCompanyId: "87654321",
-    //     type: "PDF",
-    //     region: "East",
-    //     owner: "Bob Wilson",
-    //     updatedAt: "2/17/2026",
-    //     status: "Active",
-    //     actions: "View",
-    // },
+    }
 ];
 
 const layoutStyles = {
@@ -100,6 +88,8 @@ export class App extends PureComponent {
                         <TableComponent
                             headers={TABLE_HEADERS}
                             data={TABLE_DATA}
+                            validation={false}
+                            
                         />
                     </div>
                 </main>
