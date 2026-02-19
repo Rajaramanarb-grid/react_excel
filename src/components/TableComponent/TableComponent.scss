@@ -1,0 +1,136 @@
+// TableComponent – reusable data table with colored header
+$tc-border: #e2e8f0;
+$tc-header-bg: #1e3a5f;
+$tc-header-text: #ffffff;
+$tc-row-bg: #ffffff;
+$tc-row-hover: #f1f5f9;
+$tc-text: #334155;
+$tc-radius: 8px;
+$tc-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+.table-component {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid $tc-border;
+    border-radius: $tc-radius;
+    box-shadow: $tc-shadow;
+    background-color: $tc-row-bg;
+
+    &__table {
+        width: 100%;
+        min-width: 400px;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+    }
+
+    &__head {
+        background: linear-gradient(180deg, #243b53 0%, $tc-header-bg 100%);
+
+        .table-component__th {
+            color: $tc-header-text;
+            font-weight: 600;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
+            white-space: nowrap;
+
+            &:first-child {
+                border-top-left-radius: $tc-radius - 1px;
+            }
+
+            &:last-child {
+                border-right: none;
+                border-top-right-radius: $tc-radius - 1px;
+            }
+
+            &--expand {
+                width: 44px;
+                min-width: 44px;
+                padding: 8px;
+                text-align: center;
+            }
+        }
+    }
+
+    &__expand-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border: none;
+        border-radius: 4px;
+        background: transparent;
+        color: $tc-text;
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover {
+            background-color: $tc-row-hover;
+            color: $tc-header-bg;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $tc-header-bg;
+            outline-offset: 2px;
+        }
+    }
+
+    &__expand-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    &__body {
+        .table-component__row {
+            background-color: $tc-row-bg;
+            border-bottom: 1px solid $tc-border;
+            transition: background-color 0.15s ease;
+
+            &:last-child {
+                border-bottom: none;
+
+                .table-component__td {
+                    &:first-child {
+                        border-bottom-left-radius: $tc-radius - 1px;
+                    }
+
+                    &:last-child {
+                        border-bottom-right-radius: $tc-radius - 1px;
+                    }
+                }
+            }
+
+            &:hover {
+                background-color: $tc-row-hover;
+            }
+        }
+
+        .table-component__td {
+            color: $tc-text;
+            padding: 12px 16px;
+            border-right: 1px solid $tc-border;
+            vertical-align: middle;
+
+            &:last-child {
+                border-right: none;
+            }
+
+            &--expand {
+                width: 44px;
+                min-width: 44px;
+                padding: 8px;
+                text-align: center;
+            }
+        }
+    }
+
+    &__empty {
+        color: #64748b;
+        padding: 24px 16px;
+        text-align: center;
+        font-style: italic;
+    }
+}

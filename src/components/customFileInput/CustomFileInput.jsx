@@ -116,7 +116,7 @@ export class CustomFileInput extends Component {
         // Guad class for validation
         if(!data?.length) return;
 
-        const [dateImplemented, subCompanyName, subCompanyID, documentName] = this.HEADERS;
+        const [documentName, dateImplemented, subCompanyName, subCompanyID] = this.HEADERS;
         const formattedData = data.map((row, index) => ({
             rowNumber: index + 1,
             dateImplemented: row[dateImplemented],
