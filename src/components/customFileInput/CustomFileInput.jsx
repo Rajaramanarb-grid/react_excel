@@ -4,6 +4,7 @@ import redIcon from "../../assets/download-red.svg";
 import "./CustomFileInput.scss";
 import { isCSV } from "../utils/utility";
 import { validate } from "../../api/mockApi";
+import DataTable from "../DataTable/DataTable";
 
 /**
  * Custom file upload UI: text input (shows chosen file name), "CHOOSE" button that opens
@@ -25,9 +26,10 @@ export class CustomFileInput extends Component {
 
         this.HEADERS = [
             "Date Implemented",
-            "SubCompany Name",
-            "SubCompany ID",
+            "Sub Company Name",
+            "Sub Company ID",
             "Document Name",
+            "Status",
         ];
     }
 
@@ -51,7 +53,7 @@ export class CustomFileInput extends Component {
             headers.reduce((obj, header, i) => {
                 obj[header] = row[i];
                 return obj;
-            }, {})
+            }, {}),
         );
         return [headers, data];
     };
@@ -114,17 +116,17 @@ export class CustomFileInput extends Component {
 
         const { data } = this.state;
         // Guad class for validation
-        if(!data?.length) return;
+        if (!data?.length) return;
 
-        const [dateImplemented, subCompanyName, subCompanyID, documentName] = this.HEADERS;
+        const [dateImplemented, subCompanyName, subCompanyId, documentName] =
+            this.HEADERS;
         const formattedData = data.map((row, index) => ({
             rowNumber: index + 1,
             dateImplemented: row[dateImplemented],
             subCompanyName: row[subCompanyName],
-            subCompanyID: row[subCompanyID],
+            subCompanyId: row[subCompanyId],
             documentName: row[documentName],
         }));
-
 
         validate({ WebBundleList: [...formattedData] })
             .then((response) => {
@@ -132,10 +134,15 @@ export class CustomFileInput extends Component {
                 if (!apiList.length) return;
 
                 const mergedByRowNumber = formattedData.map((row) => {
-                    const apiRow = apiList.find((r) => r.rowNumber === row.rowNumber);
+                    const apiRow = apiList.find(
+                        (r) => r.rowNumber === row.rowNumber,
+                    );
                     return { ...row, ...apiRow };
                 });
-                console.log("Merged (formattedData + API by rowNumber):", mergedByRowNumber);
+                console.log(
+                    "Merged (formattedData + API by rowNumber):",
+                    mergedByRowNumber,
+                );
                 this.setState({ TableData: mergedByRowNumber });
             })
             .catch((err) => {
@@ -184,51 +191,65 @@ export class CustomFileInput extends Component {
         const { fileName, errorMes } = this.state;
 
         return (
-            <form className="file-upload" onSubmit={this.handleSubmit}>
-                {/* Text input shows selected file name; read-only so user must use CHOOSE to pick a file. */}
-                <div className="file-upload__input-wrapper">
-                    <input
-                        type="text"
-                        value={fileName}
-                        placeholder="Upload"
-                        readOnly
-                        className="file-upload__input"
-                    />
+            <>
+                <form className="file-upload" onSubmit={this.handleSubmit}>
+                    {/* Text input shows selected file name; read-only so user must use CHOOSE to pick a file. */}
+                    <div className="file-upload__input-wrapper">
+                        <input
+                            type="text"
+                            value={fileName}
+                            placeholder="Upload"
+                            readOnly
+                            className="file-upload__input"
+                        />
 
-                    <button
-                        type="button"
-                        className="file-upload__button"
-                        onClick={this.handleButtonClick}
-                    >
-                        CHOOSE
-                    </button>
+                        <button
+                            type="button"
+                            className="file-upload__button"
+                            onClick={this.handleButtonClick}
+                        >
+                            CHOOSE
+                        </button>
 
-                    {/* Hidden file input: styled to be invisible; opened via ref when CHOOSE is clicked. */}
-                    <input
-                        type="file"
-                        ref={this.fileRef}
-                        onChange={this.handleFileChange}
-                        className="file-upload__file-input"
-                    />
-                </div>
+                        {/* Hidden file input: styled to be invisible; opened via ref when CHOOSE is clicked. */}
+                        <input
+                            type="file"
+                            ref={this.fileRef}
+                            onChange={this.handleFileChange}
+                            className="file-upload__file-input"
+                        />
+                    </div>
 
-                {errorMes && (
-                    <div className="file-upload__error">{errorMes}</div>
+                    {errorMes && (
+                        <div className="file-upload__error">{errorMes}</div>
+                    )}
+
+                    {this.additionalLinkInformation()}
+
+                    <div className="file-upload__divider"></div>
+
+                    <div className="file-upload__actions">
+                        <button
+                            className="file-upload__action-button"
+                            type="submit"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </form>
+
+                {this.state.TableData.length > 0 && (
+                    <>
+                        <DataTable
+                            headers={this.state.headers}
+                            data={this.state.TableData}
+                            onActionClick={this.handleRowUpdate}
+                            visibleColumns={4}
+                            validation={true}
+                        />
+                    </>
                 )}
-
-                {this.additionalLinkInformation()}
-
-                <div className="file-upload__divider"></div>
-
-                <div className="file-upload__actions">
-                    <button
-                        className="file-upload__action-button"
-                        type="submit"
-                    >
-                        Submit
-                    </button>
-                </div>
-            </form>
+            </>
         );
     }
 }

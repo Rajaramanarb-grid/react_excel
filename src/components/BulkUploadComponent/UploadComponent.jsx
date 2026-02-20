@@ -77,7 +77,7 @@ export class UploadComponent extends Component {
             rowNumber: index + 1,
             dateImplemented: row[0],
             subCompanyName: row[1],
-            subCompanyID: row[2],
+            subCompanyId: row[2],
             documentName: row[3],
         }));
 
